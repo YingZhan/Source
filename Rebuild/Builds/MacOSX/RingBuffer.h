@@ -49,6 +49,11 @@ public:
         return _buffer[_readIdx];
     }
     
+    T read(int offset) const{
+        setReadIdx(getReadIdx + offset);
+        return read();
+    }
+    
     T getInterpolation(){
         T res = this->get() * (1-_frac) + this->read() * _frac;
         return res;
@@ -77,6 +82,9 @@ public:
         _IncIdx(_readIdx, t - _readIdx);
     }
     
+    void setReadOffset(int offset){
+        setReadIdx(getReadIdx + offset);
+    }
     void setFrac(float fracDelay){
         int i = static_cast<int>(fracDelay);
         if(i == fracDelay){

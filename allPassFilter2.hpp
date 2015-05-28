@@ -53,9 +53,6 @@ public:
         xTemp.moveReadPtr();
         // std::cout<<old<<'\n';
         return allPassSignal;
-        
-        
-        
     }
 };
 #endif
