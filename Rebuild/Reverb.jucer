@@ -2,7 +2,7 @@
 
 <JUCERPROJECT id="CStchT" name="Reverb" projectType="audioplug" version="1.0.0"
               bundleIdentifier="com.yourcompany.Reverb" includeBinaryInAppConfig="1"
-              buildVST="1" buildVST3="0" buildAU="1" buildRTAS="0" buildAAX="0"
+              buildVST="1" buildVST3="0" buildAU="0" buildRTAS="0" buildAAX="0"
               pluginName="Reverb" pluginDesc="Reverb" pluginManufacturer="yourcompany"
               pluginManufacturerWebsite="www.yourcompany.com" pluginManufacturerEmail="support@yourcompany.com"
               pluginManufacturerCode="Manu" pluginCode="Plug" pluginChannelConfigs="{1, 1}, {2, 2}"

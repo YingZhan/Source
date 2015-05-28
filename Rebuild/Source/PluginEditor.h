@@ -23,7 +23,7 @@ class ReverbAudioProcessorEditor  : public AudioProcessorEditor
 public:
     ReverbAudioProcessorEditor (ReverbAudioProcessor* ownerFilter);
     ~ReverbAudioProcessorEditor();
-
+    
     //==============================================================================
     // This is just a standard Juce paint method...
     void paint (Graphics& g);
