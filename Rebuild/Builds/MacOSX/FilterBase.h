@@ -19,7 +19,13 @@ protected:
 public:
     enum class FilterType {"FIR", "IIR"};
     FilterType Type;
-    FilterBase(int delay_line, FilterType f = "IIR") :_delay_line(delay_line),_xdelay(_delay_line + 1), _ydelay(_delay_line + 1), Type(f) {}
+    FilterBase(int delay_line, FilterType f = "IIR") :_delay_line(delay_line),_xdelay(_delay_line + 1), _ydelay(Type == "IIR" ? (_delay_line + 1):0), Type(f) {
+        _xdelay.setReadIdx(- _delay_line);
+        if (Type == "IIR") {
+            _ydelay.setReadIdx(- _delay_line);
+
+        }
+    }
     
     virtual  ~FilterBase(){}
     
@@ -47,11 +53,52 @@ public:
     }
     
     virtual float ProcessBySample(float sample){
-        _ydelay.setReadOffset(-1);
         PreY = _ydelay.get();
         float CurY = (_kp - _kp * _bp) * sample + _bp * PreY;
         _ydelay.push(CurY);
         return CurY;
+    }
+    
+    virtual void ProcessByBuffer(float * input, float * output, int buffersize){
+        for (int i = 0 ; i < buffersize; ++i) {
+            output[i] = ProcessBySample(input[i]);
+        }
+    }
+};
+
+class AllPassFilter: public FilterBase {
+    float _gain;
+    
+public:
+    AllPassFilter(int delay_line, float gain = 0.55):FilterBase(delay_line), _gain(gain){
+    }
+    
+    virtual float ProcessBySample(float sample){
+        _xdelay.push(sample);
+        float CurY = - _gain * sample + _xdelay.get() + _gain * _ydelay.get();
+        _ydelay.push(CurY);
+        return CurY;
+        
+    }
+    
+    virtual void ProcessByBuffer(float * input, float * output, int buffersize){
+        for (int i = 0 ; i < buffersize; ++i) {
+            output[i] = ProcessBySample(input[i]);
+        }
+    }
+};
+
+class ToneCorrection : public FilterBase {
+    float _a, _gain;
+public:
+    ToneCorrection(float delay_line = 2, float a = 1.25/3):FilterBase(delay_line, "FIR"), _a(a){
+        _gain = (1-_a)/(1+_a);
+    }
+    
+    virtual float ProcessBySample(float sample){
+        _xdelay.push(sample);
+        return ( sample - _gain * _xdelay.get()) / (1- _gain);
+        
     }
     
     virtual void ProcessByBuffer(float * input, float * output, int buffersize){

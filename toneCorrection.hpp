@@ -28,7 +28,7 @@ public:
     toneCorrection():xTemp(100){
         a = 1.25/3;
         g = (1-a)/(1+a);
-        
+
     }
     float process(float sample){
         //float process(float sample,int N){

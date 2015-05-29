@@ -43,6 +43,7 @@ public:
     T get(){
         T res = _buffer[_readIdx];
         _IncIdx(_readIdx);
+        return res;
     }
     
     T read() const{
