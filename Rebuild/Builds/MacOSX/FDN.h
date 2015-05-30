@@ -12,10 +12,10 @@
 #include <iostream>
 #include "/Users/xinquanzhou/Workspace/Source/Eigen/Core"
 #include "RingBuffer.h"
-
-static const int coff[] ={
-    919,997,1061,1093,1129,1151,1171,1187,1213,1237,1259,1283,1303,1319,1327,1361
-};
+//
+//static const int coff[] ={
+//    919,997,1061,1093,1129,1151,1171,1187,1213,1237,1259,1283,1303,1319,1327,1361
+//};
 
 class FDN {
 private:
@@ -45,6 +45,11 @@ private:
     
     
 public:
+    
+    static const int coff[] ={
+        919,997,1061,1093,1129,1151,1171,1187,1213,1237,1259,1283,1303,1319,1327,1361
+    };
+    
     FDN(int DLs_num = 16):_DLs_num(DLs_num), _xdelay_lines(new RingBuffer<float> [_DLs_num]), _ydelay_lines(new RingBuffer<float> [_DLs_num] ), _gains(0,_DLs_num),_matrix(_DLs_num, _DLs_num), _delay_in(1,_DLs_num), _delay_out(1,_DLs_num), _network_out(1,_DLs_num){
         
         Eigen::MatrixXf tmpMat1 (_DLs_num/4, _DLs_num/4);

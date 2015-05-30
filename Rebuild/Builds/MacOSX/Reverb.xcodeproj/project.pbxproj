@@ -474,6 +474,7 @@
 		76526210694A721163BD5EBA /* juce_PropertiesFile.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_PropertiesFile.cpp; path = ../../JuceLibraryCode/modules/juce_data_structures/app_properties/juce_PropertiesFile.cpp; sourceTree = SOURCE_ROOT; };
 		765B8A99054EAD47E732A94B /* juce_MemoryBlock.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_MemoryBlock.cpp; path = ../../JuceLibraryCode/modules/juce_core/memory/juce_MemoryBlock.cpp; sourceTree = SOURCE_ROOT; };
 		766430871B1551DA001AFE87 /* RingBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RingBuffer.h; sourceTree = "<group>"; };
+		76B8DD691B1954480089F037 /* FDNReverb.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDNReverb.h; sourceTree = "<group>"; };
 		76C231E69AF1B49C4299FEED /* juce_ThreadWithProgressWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_ThreadWithProgressWindow.h; path = ../../JuceLibraryCode/modules/juce_gui_basics/windows/juce_ThreadWithProgressWindow.h; sourceTree = SOURCE_ROOT; };
 		76E005DD1B16B567005C0657 /* FilterBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FilterBase.h; sourceTree = "<group>"; };
 		7701639A5CFC73AF60479589 /* juce_TabbedButtonBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_TabbedButtonBar.h; path = ../../JuceLibraryCode/modules/juce_gui_basics/layout/juce_TabbedButtonBar.h; sourceTree = SOURCE_ROOT; };
@@ -1011,6 +1012,7 @@
 				766430871B1551DA001AFE87 /* RingBuffer.h */,
 				76E005DD1B16B567005C0657 /* FilterBase.h */,
 				7619F5851B17AE450026316F /* FDN.h */,
+				76B8DD691B1954480089F037 /* FDNReverb.h */,
 			);
 			name = Source;
 			sourceTree = "<group>";
