@@ -10,7 +10,8 @@
 #define Reverb_FDN_h
 
 #include <iostream>
-#include "/Users/xinquanzhou/Workspace/Source/Eigen/Core"
+//#include "/Users/xinquanzhou/Workspace/Source/Eigen/Core"
+#include "/Users/xinquanzhou/Workspace/Source/Eigen/Dense"
 #include "RingBuffer.h"
 //
 //static const int coff[] ={
@@ -20,20 +21,26 @@
 class FDN {
 private:
     int _DLs_num;
-    RingBuffer<float> ** _xdelay_lines, _ydelay_lines;
+    RingBuffer<float> ** _xdelay_lines;
     Eigen::MatrixXf _gains;
     Eigen::MatrixXf _matrix;
-    Eigen::MatrixXf _delay_in, _delay_out, _network_out, ;
+    Eigen::MatrixXf _delay_in, _delay_out, _network_out ;
     
     void _delayAllLines(){
+        int ** a ;
+        a = new int * [3];
+        for(int i = 0 ; i < 3 ; i++){
+            a[i] = new int [3];
+        }
+        
         for (int i = 0 ; i < _DLs_num; ++i) {
             _delay_out(0,i) = _delayOneLine(_delay_in(0,i),i);
         }
     }
     
     float _delayOneLine(float sample, int idx){
-        _xdelay_lines[idx].push(sample);
-        return _xdelay_lines[idx].get();
+        _xdelay_lines[idx]->push(sample);
+        return _xdelay_lines[idx]->get();
     }
     
     void _processMatrix(){
@@ -46,11 +53,15 @@ private:
     
 public:
     
-    static const int coff[] ={
+    const int coff[16] ={
         919,997,1061,1093,1129,1151,1171,1187,1213,1237,1259,1283,1303,1319,1327,1361
     };
     
-    FDN(int DLs_num = 16):_DLs_num(DLs_num), _xdelay_lines(new RingBuffer<float> [_DLs_num]), _ydelay_lines(new RingBuffer<float> [_DLs_num] ), _gains(0,_DLs_num),_matrix(_DLs_num, _DLs_num), _delay_in(1,_DLs_num), _delay_out(1,_DLs_num), _network_out(1,_DLs_num){
+    FDN(){
+        FDN(16);
+    }
+    
+    FDN(int DLs_num):_DLs_num(DLs_num), _gains(0,_DLs_num),_matrix(_DLs_num, _DLs_num), _delay_in(1,_DLs_num), _delay_out(1,_DLs_num), _network_out(1,_DLs_num){
         
         Eigen::MatrixXf tmpMat1 (_DLs_num/4, _DLs_num/4);
         try {
@@ -69,27 +80,25 @@ public:
             
             _gains << 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1;
             
+            _xdelay_lines = new RingBuffer<float> *[_DLs_num];
+            for (int i = 0 ; i < _DLs_num; ++i) {
+                _xdelay_lines[i] = new RingBuffer<float>(coff[i] + 1);
+            }
 
-        } catch () {
+        } catch (const std::exception& ex) {
             std::cout << "matrix initialize failed" << std::endl;
             throw;
         }
         
-        for (int i = 0 ; i < _DLs_num; ++i) {
-            _xdelay_lines[i] = new RingBuffer<float>(coff[i] + 1);
-        }
+        
     }
     ~FDN(){
         for (int i = 0 ; i < _DLs_num; ++i) {
             delete _xdelay_lines[i];
-            delete _ydelay_lines[i];
             _xdelay_lines[i] = 0 ;
-            _ydelay_lines[i] = 0 ;
         }
         delete _xdelay_lines;
-        delete _ydelay_lines;
         _xdelay_lines = 0 ;
-        _ydelay_lines = 0 ;
     }
     
     Eigen::MatrixXf process(Eigen::MatrixXf input){

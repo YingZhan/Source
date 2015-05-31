@@ -13,6 +13,7 @@
 #include "/Users/xinquanzhou/Workspace/Source/Eigen/Core"
 #include "FilterBase.h"
 #include "FDN.h"
+class FDN ;
 
 class FDNReverb {
 private:
@@ -22,29 +23,35 @@ private:
     AllPassFilter ** _APfilters;
     ToneCorrection * _TCfilter;
     Eigen::MatrixXf _FDN_in, _FDN_out;
-    enum class Preprocess {"allpass", "tone correction"};
-    
+    //FDNReverb();
 public:
+    enum class Preprocess {allpass, tone_correction};
+    
     Preprocess Pretype;
-    FDNReverb(int fs = 44100 , int delay_lines_num = 16, Preprocess Pretype = "tone correction"):_DLs_num(delay_lines_num), _fs(fs ), _FDN(new FDN(_DLs_num)), _LPfilters(new LowPassFilter[_DLs_num]), _FDN_in(1,_DLs_num), _FDN_out(1,_DLs_num), Pretype(Pretype){
+    
+    FDNReverb(){
+        FDNReverb(44100,16,Preprocess::tone_correction);
+    }
+    
+    FDNReverb(int fs , int delay_lines_num = 16, Preprocess Pretype = Preprocess::tone_correction):_DLs_num(delay_lines_num), _fs(fs ), _FDN(new FDN(_DLs_num)), _LPfilters(new LowPassFilter*[_DLs_num]), _FDN_in(1,_DLs_num), _FDN_out(1,_DLs_num), Pretype(Pretype){
         try {
-            if (Pretype == "tone correction") {
+            if (Pretype == Preprocess::tone_correction) {
                 _TCfilter = new ToneCorrection();
                 _APfilters = nullptr;
             }
             else{
-                _APfilters = new AllPassFilter[3];
+                _APfilters = new AllPassFilter*[3];
                 _APfilters[0] = new AllPassFilter(347);
                 _APfilters[1] = new AllPassFilter(113);
                 _APfilters[2] = new AllPassFilter(37);
                 _TCfilter = nullptr;
             }
             for (int i = 0 ; i < _DLs_num; i++) {
-                _LPfilters = new LowPassFilter(_fs);
+                _LPfilters[i] = new LowPassFilter(_fs);
             }
             
 
-        } catch () {
+        } catch (const std::exception &e) {
             throw;
         }
     }
@@ -56,7 +63,7 @@ public:
             }
             delete _LPfilters;
             
-            if (Pretype == "tone correction") {
+            if (Pretype ==  Preprocess::tone_correction) {
                 delete _TCfilter;
             }
             else{
@@ -68,7 +75,7 @@ public:
             
             delete _FDN;
             
-        } catch () {
+        } catch (const std::exception & e) {
             ;
         }
     }
@@ -77,7 +84,8 @@ public:
     void setReverbTime(float timeInSecond, float q = 1.25/3){
         float t60 = timeInSecond;
         for (int i = 0 ; i < _DLs_num; i++) {
-            float kp = [pow(10, -3 * FDN::coff[i]/ (_fs * t60) );
+            //float kp = pow(10, -3 * FDN::coff[i]/ (_fs * t60) );
+            float kp = 1;
             float bp = 20 * log10(kp)* log(10) / 80 * ( 1- 1/(q*q));
             _LPfilters[i] -> SetParams(kp,bp);
         }
@@ -86,7 +94,7 @@ public:
     float ProcessBySample(float sample){
         float CurY = sample ;
         float tmp ;
-        if(Pretype == "tone correction"){
+        if(Pretype ==  Preprocess::tone_correction){
             tmp = _TCfilter -> ProcessBySample(sample);
         }
         else {
@@ -95,7 +103,8 @@ public:
                 tmp = _APfilters[i]->ProcessBySample(tmp);
             }
         }
-        _FDN_in.Constant(tmp);
+        _FDN_in =  Eigen::MatrixXf::Identity(1,_DLs_num) ;
+        _FDN_in = _FDN_in * tmp;
         _FDN_out =  _FDN -> process(_FDN_in);
         for( int i = 0 ; i < _DLs_num; i++){
             

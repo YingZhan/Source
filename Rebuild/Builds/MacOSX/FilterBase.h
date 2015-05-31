@@ -15,13 +15,13 @@ class FilterBase {
 protected:
     int _delay_line;
     RingBuffer<float> _xdelay,_ydelay;
-    FilterType();
+    //FilterBase();
 public:
-    enum class FilterType {"FIR", "IIR"};
+    enum class FilterType {FIR, IIR};
     FilterType Type;
-    FilterBase(int delay_line, FilterType f = "IIR") :_delay_line(delay_line),_xdelay(_delay_line + 1), _ydelay(Type == "IIR" ? (_delay_line + 1):0), Type(f) {
+    FilterBase(int delay_line, FilterType f = FilterType::IIR) :_delay_line(delay_line),_xdelay(_delay_line + 1), _ydelay(Type == FilterType::IIR ? (_delay_line + 1):0), Type(f) {
         _xdelay.setReadIdx(- _delay_line);
-        if (Type == "IIR") {
+        if (Type == FilterType::IIR) {
             _ydelay.setReadIdx(- _delay_line);
 
         }
@@ -29,13 +29,9 @@ public:
     
     virtual  ~FilterBase(){}
     
-    virtual float ProcessBySample(float sample) = 0 {
-    }
+    virtual float ProcessBySample(float sample) = 0;
     
-    virtual void ProcessByBuffer = 0 (float * input, float * output, int buffersize){
-        
-    }
-    
+    virtual void ProcessByBuffer (float * input, float * output, int buffersize) = 0 ;
 };
 
 
@@ -44,7 +40,9 @@ private:
     float _kp, _bp;
     LowPassFilter();
 public:
-    LowPassFilter(int delay_line = 2, float kp, float bp): FilterBase(delay_line), _kp(kp), _bp(bp){}
+    LowPassFilter(int delay_line):FilterBase(delay_line),_kp(0), _bp(0){}
+    
+    LowPassFilter( float kp, float bp, int delay_line = 2): FilterBase(delay_line), _kp(kp), _bp(bp){}
     ~LowPassFilter(){}
     
     void SetParams(float kp, float bp){
@@ -53,7 +51,7 @@ public:
     }
     
     virtual float ProcessBySample(float sample){
-        PreY = _ydelay.get();
+        float PreY = _ydelay.get();
         float CurY = (_kp - _kp * _bp) * sample + _bp * PreY;
         _ydelay.push(CurY);
         return CurY;
@@ -91,7 +89,7 @@ public:
 class ToneCorrection : public FilterBase {
     float _a, _gain;
 public:
-    ToneCorrection(float delay_line = 2, float a = 1.25/3):FilterBase(delay_line, "FIR"), _a(a){
+    ToneCorrection(float delay_line = 2, float a = 1.25/3):FilterBase(delay_line, FilterType::IIR), _a(a){
         _gain = (1-_a)/(1+_a);
     }
     

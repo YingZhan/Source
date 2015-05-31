@@ -12,7 +12,7 @@
 #define PLUGINPROCESSOR_H_INCLUDED
 
 #include "../JuceLibraryCode/JuceHeader.h"
-
+#include "FDNReverb.h"
 
 //==============================================================================
 /**
@@ -20,8 +20,9 @@
 class ReverbAudioProcessor  : public AudioProcessor
 {
 public:
+    
     //==============================================================================
-    ReverbAudioProcessor();
+    ReverbAudioProcessor(float mix = 1.0);
     ~ReverbAudioProcessor();
 
     //==============================================================================
@@ -69,6 +70,9 @@ public:
 private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ReverbAudioProcessor)
+    
+    float _mix ;
+    FDNReverb * _reverb;
 };
 
 #endif  // PLUGINPROCESSOR_H_INCLUDED

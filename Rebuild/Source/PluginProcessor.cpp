@@ -13,9 +13,12 @@
 
 
 //==============================================================================
-ReverbAudioProcessor::ReverbAudioProcessor()
+ReverbAudioProcessor::ReverbAudioProcessor(float mix):_mix(mix)
 {
+    //int fs = 44100;
+    _reverb = new FDNReverb();
 }
+
 
 ReverbAudioProcessor::~ReverbAudioProcessor()
 {
@@ -139,10 +142,11 @@ void ReverbAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
 {
     // This is the place where you'd normally do the guts of your plugin's
     // audio processing...
+    int buffersize = buffer.getNumSamples();
     for (int channel = 0; channel < getNumInputChannels(); ++channel)
     {
         float* channelData = buffer.getSampleData (channel);
-
+        _reverb -> ProcessByBuffer(channelData, channelData, buffersize);
         // ..do something to the data...
     }
 

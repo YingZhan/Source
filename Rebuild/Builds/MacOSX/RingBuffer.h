@@ -19,7 +19,7 @@ public:
     RingBuffer(size_t BufferLengthInSamples):_readIdx(0),_writeIdx(0),_buffer(nullptr), _frac(0),_buffer_length(BufferLengthInSamples) {
         try {
             _buffer = new T[_buffer_length];
-        } catch () {
+        } catch (const std::exception& ex) {
             cout << "Allocation failed" << endl;
             throw;
         }
@@ -51,8 +51,8 @@ public:
     }
     
     T read(int offset) const{
-        setReadIdx(getReadIdx + offset);
-        return read();
+        //setReadIdx(getReadIdx + offset);
+        return _buffer[getReadIdx() + offset];
     }
     
     T getInterpolation(){
@@ -75,17 +75,19 @@ public:
         return _readIdx;
     }
     
-    void setWriteIdx(size_t t){
+    void setWriteIdx(int t){
         _IncIdx(_writeIdx, t - _writeIdx);
     }
     
-    void setReadIdx(size_t t){
+    void setReadIdx(int t){
         _IncIdx(_readIdx, t - _readIdx);
     }
     
-    void setReadOffset(int offset){
-        setReadIdx(getReadIdx + offset);
-    }
+//    void setReadOffset(int offset){
+//        setReadIdx(getReadIdx + offset);
+//    }
+    
+    
     void setFrac(float fracDelay){
         int i = static_cast<int>(fracDelay);
         if(i == fracDelay){
@@ -110,7 +112,7 @@ private:
         }
         idx = (idx + offset ) % _buffer_length;
     }
-}
+};
 
 
 #endif
