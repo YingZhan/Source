@@ -1,0 +1,28 @@
+dependencies: \
+  /Users/xinquanzhou/Workspace/Source/Rebuild/Builds/MacOSX/Unit_test/main.cpp \
+  /Users/xinquanzhou/Workspace/Source/Rebuild/Builds/MacOSX/Unit_test/FilterTest.h \
+  /Users/xinquanzhou/Workspace/googletest-read-only/xcode/DerivedData/gtest/Build/Products/Debug/gtest.framework/Headers/gtest.h \
+  /Users/xinquanzhou/Workspace/googletest-read-only/xcode/DerivedData/gtest/Build/Products/Debug/gtest.framework/Headers/internal/gtest-internal.h \
+  /Users/xinquanzhou/Workspace/googletest-read-only/xcode/DerivedData/gtest/Build/Products/Debug/gtest.framework/Headers/internal/gtest-port.h \
+  /Users/xinquanzhou/Workspace/googletest-read-only/xcode/DerivedData/gtest/Build/Products/Debug/gtest.framework/Headers/gtest-message.h \
+  /Users/xinquanzhou/Workspace/googletest-read-only/xcode/DerivedData/gtest/Build/Products/Debug/gtest.framework/Headers/internal/gtest-string.h \
+  /Users/xinquanzhou/Workspace/googletest-read-only/xcode/DerivedData/gtest/Build/Products/Debug/gtest.framework/Headers/internal/gtest-filepath.h \
+  /Users/xinquanzhou/Workspace/googletest-read-only/xcode/DerivedData/gtest/Build/Products/Debug/gtest.framework/Headers/internal/gtest-type-util.h \
+  /Users/xinquanzhou/Workspace/googletest-read-only/xcode/DerivedData/gtest/Build/Products/Debug/gtest.framework/Headers/gtest-death-test.h \
+  /Users/xinquanzhou/Workspace/googletest-read-only/xcode/DerivedData/gtest/Build/Products/Debug/gtest.framework/Headers/internal/gtest-death-test-internal.h \
+  /Users/xinquanzhou/Workspace/googletest-read-only/xcode/DerivedData/gtest/Build/Products/Debug/gtest.framework/Headers/gtest-param-test.h \
+  /Users/xinquanzhou/Workspace/googletest-read-only/xcode/DerivedData/gtest/Build/Products/Debug/gtest.framework/Headers/internal/gtest-param-util.h \
+  /Users/xinquanzhou/Workspace/googletest-read-only/xcode/DerivedData/gtest/Build/Products/Debug/gtest.framework/Headers/internal/gtest-linked_ptr.h \
+  /Users/xinquanzhou/Workspace/googletest-read-only/xcode/DerivedData/gtest/Build/Products/Debug/gtest.framework/Headers/gtest-printers.h \
+  /Users/xinquanzhou/Workspace/googletest-read-only/xcode/DerivedData/gtest/Build/Products/Debug/gtest.framework/Headers/internal/gtest-param-util-generated.h \
+  /Users/xinquanzhou/Workspace/googletest-read-only/xcode/DerivedData/gtest/Build/Products/Debug/gtest.framework/Headers/gtest_prod.h \
+  /Users/xinquanzhou/Workspace/googletest-read-only/xcode/DerivedData/gtest/Build/Products/Debug/gtest.framework/Headers/gtest-test-part.h \
+  /Users/xinquanzhou/Workspace/googletest-read-only/xcode/DerivedData/gtest/Build/Products/Debug/gtest.framework/Headers/gtest-typed-test.h \
+  /Users/xinquanzhou/Workspace/googletest-read-only/xcode/DerivedData/gtest/Build/Products/Debug/gtest.framework/Headers/gtest_pred_impl.h \
+  /Users/xinquanzhou/Workspace/Source/Rebuild/Builds/MacOSX/Calculator/Cal.h \
+  /Users/xinquanzhou/Workspace/Source/Rebuild/Builds/MacOSX/SignalGen.h \
+  /Users/xinquanzhou/Workspace/Source/Rebuild/Builds/MacOSX/ErrorDef.h \
+  /Users/xinquanzhou/Workspace/Source/Rebuild/Builds/MacOSX/Util.h \
+  /Users/xinquanzhou/Workspace/Source/Rebuild/Builds/MacOSX/FilterBase.h \
+  /Users/xinquanzhou/Workspace/Source/Rebuild/Builds/MacOSX/RingBuffer.h \
+  /Users/xinquanzhou/Workspace/Source/Rebuild/Builds/MacOSX/Unit_test/FileReader.h

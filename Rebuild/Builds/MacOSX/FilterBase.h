@@ -15,7 +15,7 @@ class FilterBase {
 protected:
     int _delay_line;
     RingBuffer<float> _xdelay,_ydelay;
-    //FilterBase();
+    FilterBase();
 public:
     enum class FilterType {FIR, IIR};
     FilterType Type;
@@ -42,7 +42,7 @@ private:
 public:
     LowPassFilter(int delay_line):FilterBase(delay_line),_kp(0), _bp(0){}
     
-    LowPassFilter( float kp, float bp, int delay_line = 2): FilterBase(delay_line), _kp(kp), _bp(bp){}
+    LowPassFilter( float kp, float bp): FilterBase(2), _kp(kp), _bp(bp){}
     ~LowPassFilter(){}
     
     void SetParams(float kp, float bp){
@@ -89,10 +89,18 @@ public:
 class ToneCorrection : public FilterBase {
     float _a, _gain;
 public:
-    ToneCorrection(float delay_line = 2, float a = 1.25/3):FilterBase(delay_line, FilterType::IIR), _a(a){
+    ToneCorrection():FilterBase(2),_a(1.25/3),_gain(0){
+        _gain = (1-_a)/(1+_a);
+    }
+    ToneCorrection(float delay_line, float a):FilterBase(delay_line, FilterType::IIR), _a(a){
         _gain = (1-_a)/(1+_a);
     }
     
+    
+    void setParam(float a){
+        _a = a;
+        _gain = (1-_a)/(1+_a);
+    }
     virtual float ProcessBySample(float sample){
         _xdelay.push(sample);
         return ( sample - _gain * _xdelay.get()) / (1- _gain);
