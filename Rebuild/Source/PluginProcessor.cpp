@@ -145,7 +145,7 @@ void ReverbAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
     int buffersize = buffer.getNumSamples();
     for (int channel = 0; channel < getNumInputChannels(); ++channel)
     {
-        float* channelData = buffer.getSampleData (channel);
+        float* channelData = buffer.getSampleData(channel);
         _reverb -> ProcessByBuffer(channelData, channelData, buffersize);
         // ..do something to the data...
     }

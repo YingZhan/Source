@@ -19,7 +19,7 @@ protected:
 public:
     enum class FilterType {FIR, IIR};
     FilterType Type;
-    FilterBase(int delay_line, FilterType f = FilterType::IIR) :_delay_line(delay_line),_xdelay(_delay_line + 1), _ydelay(Type == FilterType::IIR ? (_delay_line + 1):0), Type(f) {
+    FilterBase(int delay_line, FilterType f = FilterType::IIR) :_delay_line(delay_line),_xdelay(_delay_line ), _ydelay(f == FilterType::IIR ? (_delay_line):0), Type(f) {
         _xdelay.setReadIdx(- _delay_line);
         if (Type == FilterType::IIR) {
             _ydelay.setReadIdx(- _delay_line);
@@ -42,12 +42,14 @@ private:
 public:
     LowPassFilter(int delay_line):FilterBase(delay_line),_kp(0), _bp(0){}
     
-    LowPassFilter( float kp, float bp): FilterBase(2), _kp(kp), _bp(bp){}
+    LowPassFilter( float kp, float bp): FilterBase(1), _kp(kp), _bp(bp){}
     ~LowPassFilter(){}
     
     void SetParams(float kp, float bp){
         _kp = kp;
         _bp = bp;
+        _xdelay.clear();
+        _ydelay.clear();
     }
     
     virtual float ProcessBySample(float sample){
@@ -72,8 +74,9 @@ public:
     }
     
     virtual float ProcessBySample(float sample){
-        _xdelay.push(sample);
+        
         float CurY = - _gain * sample + _xdelay.get() + _gain * _ydelay.get();
+        _xdelay.push(sample);
         _ydelay.push(CurY);
         return CurY;
         
@@ -89,7 +92,7 @@ public:
 class ToneCorrection : public FilterBase {
     float _a, _gain;
 public:
-    ToneCorrection():FilterBase(2),_a(1.25/3),_gain(0){
+    ToneCorrection():FilterBase(1),_a(1.25/3),_gain(0){
         _gain = (1-_a)/(1+_a);
     }
     ToneCorrection(float delay_line, float a):FilterBase(delay_line, FilterType::IIR), _a(a){
@@ -100,11 +103,13 @@ public:
     void setParam(float a){
         _a = a;
         _gain = (1-_a)/(1+_a);
+        _xdelay.clear();
     }
     virtual float ProcessBySample(float sample){
-        _xdelay.push(sample);
-        return ( sample - _gain * _xdelay.get()) / (1- _gain);
         
+        float curY = ( sample - _gain * _xdelay.get()) / (1- _gain);
+        _xdelay.push(sample);
+        return curY;
     }
     
     virtual void ProcessByBuffer(float * input, float * output, int buffersize){

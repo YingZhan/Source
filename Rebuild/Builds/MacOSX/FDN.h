@@ -10,7 +10,7 @@
 #define Reverb_FDN_h
 
 #include <iostream>
-//#include "/Users/xinquanzhou/Workspace/Source/Eigen/Core"
+#include "/Users/xinquanzhou/Workspace/Source/Eigen/Core"
 #include "/Users/xinquanzhou/Workspace/Source/Eigen/Dense"
 #include "RingBuffer.h"
 //

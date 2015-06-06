@@ -25,13 +25,18 @@ class FileReader {
     
 public:
     FileReader(const char * filename):_numrow(0){
-        _filename = filename;
-        std::ifstream file(_filename);
-        std::string line;
-        while (std::getline(file,line)) {
-            raw_content.push_back(line);
-            _numrow ++;
+        try {
+            _filename = filename;
+            std::ifstream file(_filename);
+            std::string line;
+            while (std::getline(file,line)) {
+                raw_content.push_back(line);
+                _numrow ++;
+            }
+        } catch (std::exception &e) {
+            abort();
         }
+       
     }
     
     ~FileReader(){}

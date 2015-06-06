@@ -19,7 +19,6 @@ dependencies: \
   /Users/xinquanzhou/Workspace/googletest-read-only/xcode/DerivedData/gtest/Build/Products/Debug/gtest.framework/Headers/gtest-test-part.h \
   /Users/xinquanzhou/Workspace/googletest-read-only/xcode/DerivedData/gtest/Build/Products/Debug/gtest.framework/Headers/gtest-typed-test.h \
   /Users/xinquanzhou/Workspace/googletest-read-only/xcode/DerivedData/gtest/Build/Products/Debug/gtest.framework/Headers/gtest_pred_impl.h \
-  /Users/xinquanzhou/Workspace/Source/Rebuild/Builds/MacOSX/Calculator/Cal.h \
   /Users/xinquanzhou/Workspace/Source/Rebuild/Builds/MacOSX/SignalGen.h \
   /Users/xinquanzhou/Workspace/Source/Rebuild/Builds/MacOSX/ErrorDef.h \
   /Users/xinquanzhou/Workspace/Source/Rebuild/Builds/MacOSX/Util.h \

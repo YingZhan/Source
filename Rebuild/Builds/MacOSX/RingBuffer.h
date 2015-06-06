@@ -100,6 +100,11 @@ public:
         setReadIdx(_writeIdx - i);
     }
     
+    
+    void clear(){
+        memset(_buffer, 0, sizeof(T)*_buffer_length);
+    }
+    
 private:
     int _readIdx, _writeIdx;
     T * _buffer;
