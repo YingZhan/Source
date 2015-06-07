@@ -40,7 +40,10 @@ private:
     float _kp, _bp;
     LowPassFilter();
 public:
-    LowPassFilter(int delay_line):FilterBase(delay_line),_kp(0), _bp(0){}
+    LowPassFilter(int delay_line):FilterBase(delay_line),_kp(0), _bp(0){
+        _xdelay.setReadIdx(-1);
+        _ydelay.setReadIdx(-1);
+    }
     
     LowPassFilter( float kp, float bp): FilterBase(1), _kp(kp), _bp(bp){}
     ~LowPassFilter(){}
@@ -97,6 +100,8 @@ public:
     }
     ToneCorrection(float delay_line, float a):FilterBase(delay_line, FilterType::IIR), _a(a){
         _gain = (1-_a)/(1+_a);
+        _xdelay.setReadIdx(-1);
+        _ydelay.setReadIdx(-1);
     }
     
     

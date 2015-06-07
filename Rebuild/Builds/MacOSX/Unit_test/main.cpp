@@ -8,7 +8,7 @@
 
 #include <iostream>
 #include "FilterTest.h"
-
+#include "FDNTest.h"
 
 
 int main(int argc, char * argv[])

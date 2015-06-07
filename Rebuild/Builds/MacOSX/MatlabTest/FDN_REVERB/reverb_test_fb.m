@@ -3,7 +3,15 @@
 %size(x)
 %x = mean(x')';
 %size(x)
-%x = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,45,24,22,34,23,24,25,26,27,28,23,11,99,8,54,34,23,4,3,8,7,5,3,6,89,6,89,43,56,10];
+% x = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,45,24,22,34,23,24,25,26,27,28,23,11,99,8,54,34,23,4,3,8,7,5,3,6,89,6,89,43,56,10];
+
+x = ones(1,512);
+fs = 44100/4;
+f = 1000;
+% for i = 1:length(x)
+%     x(i) = sin(2*pi * f * i/fs);
+% end
+
 
 N = length(x);
 y = zeros(1,N);
@@ -11,7 +19,7 @@ b = ones(16,1);
 c = [1;1;1;1;1;1;1;1;1;1;1;1;1;1;1;1];
 
 
-
+f_sine = fopen('FDNDC.txt','w');
 
 m = [919,997,1061,1093,1129,1151,1171,1187,1213,1237,1259,1283,1303,1319,1327,1361];
 %g = 0.9;
@@ -100,7 +108,25 @@ for n = 1:N
     y15((m(15)+n)) = x15(n);
     y16((m(16)+n)) = x16(n); 
     
+    fprintf(f_sine,'%f ',x1(n));
+    fprintf(f_sine,'%f ',x2(n));
+    fprintf(f_sine,'%f ',x3(n));
+    fprintf(f_sine,'%f ',x4(n));
+    fprintf(f_sine,'%f ',x5(n));
+    fprintf(f_sine,'%f ',x6(n));
+    fprintf(f_sine,'%f ',x7(n));
+    fprintf(f_sine,'%f ',x8(n));
+    fprintf(f_sine,'%f ',x9(n));
+    fprintf(f_sine,'%f ',x10(n));
+    fprintf(f_sine,'%f ',x11(n));
+    fprintf(f_sine,'%f ',x12(n));
+    fprintf(f_sine,'%f ',x13(n));
+    fprintf(f_sine,'%f ',x14(n));
+    fprintf(f_sine,'%f ',x15(n));
+    fprintf(f_sine,'%f',x16(n));
     
+    fprintf(f_sine,'\n');
+
     % treat y1(n),y2(n) ,y3(n), y4(n) as lp filter input
     %lpf1 = [lpf1,y1(n+1)+lpfConstant*lpf1(n)];
     %lpf2 = [lpf2,y2(n+1)+lpfConstant*lpf2(n)];

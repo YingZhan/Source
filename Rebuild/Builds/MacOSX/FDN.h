@@ -57,11 +57,7 @@ public:
         919,997,1061,1093,1129,1151,1171,1187,1213,1237,1259,1283,1303,1319,1327,1361
     };
     
-    FDN(){
-        FDN(16);
-    }
-    
-    FDN(int DLs_num):_DLs_num(DLs_num), _gains(0,_DLs_num),_matrix(_DLs_num, _DLs_num), _delay_in(1,_DLs_num), _delay_out(1,_DLs_num), _network_out(1,_DLs_num){
+    FDN():_DLs_num(16), _gains(1,_DLs_num),_matrix(_DLs_num, _DLs_num), _delay_in(1,_DLs_num), _delay_out(1,_DLs_num), _network_out(1,_DLs_num){
         
         Eigen::MatrixXf tmpMat1 (_DLs_num/4, _DLs_num/4);
         try {
@@ -84,6 +80,40 @@ public:
             for (int i = 0 ; i < _DLs_num; ++i) {
                 _xdelay_lines[i] = new RingBuffer<float>(coff[i] + 1);
             }
+            _network_out = Eigen::MatrixXf::Zero(1, _DLs_num);
+            
+        } catch (const std::exception& ex) {
+            std::cout << "matrix initialize failed" << std::endl;
+            throw;
+        }
+        
+        
+    }
+    
+    FDN(int DLs_num):_DLs_num(DLs_num), _gains(1,_DLs_num),_matrix(_DLs_num, _DLs_num), _delay_in(1,_DLs_num), _delay_out(1,_DLs_num), _network_out(1,_DLs_num){
+        
+        Eigen::MatrixXf tmpMat1 (_DLs_num/4, _DLs_num/4);
+        try {
+            tmpMat1 << 1,-1,-1,-1,-1,1,-1,-1,-1,-1,1,-1,-1,-1,-1,1;
+            tmpMat1 = tmpMat1 * 0.5;
+            
+            // just for copy and paste
+            Eigen::MatrixXf feedbackMatrix2 = tmpMat1;
+            
+            _matrix << feedbackMatrix2,-feedbackMatrix2,-feedbackMatrix2,-feedbackMatrix2,
+            -feedbackMatrix2,feedbackMatrix2,-feedbackMatrix2,-feedbackMatrix2,
+            -feedbackMatrix2,-feedbackMatrix2,feedbackMatrix2,-feedbackMatrix2,
+            -feedbackMatrix2,-feedbackMatrix2,-feedbackMatrix2,feedbackMatrix2;
+            
+            _matrix = _matrix * 0.5;
+            
+            _gains << 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1;
+            
+            _xdelay_lines = new RingBuffer<float> *[_DLs_num];
+            for (int i = 0 ; i < _DLs_num; ++i) {
+                _xdelay_lines[i] = new RingBuffer<float>(coff[i] + 1);
+            }
+            _network_out = Eigen::MatrixXf::Zero(1, _DLs_num);
 
         } catch (const std::exception& ex) {
             std::cout << "matrix initialize failed" << std::endl;
@@ -101,7 +131,7 @@ public:
         _xdelay_lines = 0 ;
     }
     
-    Eigen::MatrixXf process(Eigen::MatrixXf input){
+    Eigen::MatrixXf process(Eigen::MatrixXf& input){
         _delay_in = _network_out + input;
         _delayAllLines();
         _processMatrix();

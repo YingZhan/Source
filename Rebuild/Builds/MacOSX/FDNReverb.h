@@ -29,9 +29,29 @@ public:
     
     Preprocess Pretype;
     
-    FDNReverb(){
-        FDNReverb(44100,16,Preprocess::tone_correction);
+    FDNReverb():_DLs_num(16), _fs(44100), _FDN(new FDN(_DLs_num)), _LPfilters(new LowPassFilter*[_DLs_num]), _FDN_in(1,_DLs_num), _FDN_out(1,_DLs_num), Pretype(Preprocess::tone_correction){
+        try {
+            if (Pretype == Preprocess::tone_correction) {
+                _TCfilter = new ToneCorrection();
+                _APfilters = nullptr;
+            }
+            else{
+                _APfilters = new AllPassFilter*[3];
+                _APfilters[0] = new AllPassFilter(347);
+                _APfilters[1] = new AllPassFilter(113);
+                _APfilters[2] = new AllPassFilter(37);
+                _TCfilter = nullptr;
+            }
+            for (int i = 0 ; i < _DLs_num; i++) {
+                _LPfilters[i] = new LowPassFilter(_fs);
+            }
+            
+            
+        } catch (const std::exception &e) {
+            throw;
+        }
     }
+
     
     FDNReverb(int fs , int delay_lines_num = 16, Preprocess Pretype = Preprocess::tone_correction):_DLs_num(delay_lines_num), _fs(fs ), _FDN(new FDN(_DLs_num)), _LPfilters(new LowPassFilter*[_DLs_num]), _FDN_in(1,_DLs_num), _FDN_out(1,_DLs_num), Pretype(Pretype){
         try {
