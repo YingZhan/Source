@@ -117,6 +117,11 @@ TEST (Unit_test, AP_Impulse)
 
     for (int i = 0 ; i < b.size; ++i) {
         b.output_buffer[i] = ap.ProcessBySample(b.input_buffer[i]);
+//        float m = b.output_buffer[i];
+//        float n = f.content[0][i];
+//        if( fabsf(m-n) > 0.001){
+//            float flag = 0 ;
+//        }
         ASSERT_NEAR(b.output_buffer[i],f.content[0][i], 0.001);
     }
     AllPassFilter ap2(113);

@@ -41,6 +41,9 @@ struct MatrixBuffer{
     void setMatrixBuffer(){
         for(int i = 0 ; i < buffersize; i++){
             input[i] = Eigen::MatrixXf::Ones(1,16) * _input[i];
+            for(int j = 0 ; j < 16 ; j++){
+                float x = input[i](0,j);
+            }
         }
     }
 };
@@ -48,7 +51,6 @@ struct MatrixBuffer{
 TEST (FDNTest, DC)
 {
     MatrixBuffer b;
-    
     CSignalGen::generateDc(b._input,b.buffersize);
     b.setMatrixBuffer();
     FileReader f("/Users/xinquanzhou/Workspace/Source/Rebuild/Builds/MacOSX/MatlabTest/FDN_REVERB/FDNDC.txt");
@@ -57,6 +59,11 @@ TEST (FDNTest, DC)
     for (int i = 0 ; i < b.buffersize; ++i) {
         b.output[i] = fdn.process(b.input[i]);
         for (int j = 0 ; j < 16 ; j++) {
+            float m = b.output[i](0,j);
+            float n = f.content[i][j];
+            if(fabsf(m-n) > 0.001){
+                float flag = 1.0;
+            }
             ASSERT_NEAR(b.output[i](0,j),f.content[i][j], 0.001);
         }
     }

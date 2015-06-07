@@ -19,6 +19,7 @@ public:
     RingBuffer(size_t BufferLengthInSamples):_readIdx(0),_writeIdx(0),_buffer(nullptr), _frac(0),_buffer_length(BufferLengthInSamples) {
         try {
             _buffer = new T[_buffer_length];
+            this->clear();
         } catch (const std::exception& ex) {
             cout << "Allocation failed" << endl;
             throw;

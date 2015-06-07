@@ -95,13 +95,12 @@ public:
 class ToneCorrection : public FilterBase {
     float _a, _gain;
 public:
-    ToneCorrection():FilterBase(1),_a(1.25/3),_gain(0){
+    ToneCorrection():FilterBase(1,FilterType::FIR),_a(1.25/3),_gain(0){
         _gain = (1-_a)/(1+_a);
     }
     ToneCorrection(float delay_line, float a):FilterBase(delay_line, FilterType::IIR), _a(a){
         _gain = (1-_a)/(1+_a);
         _xdelay.setReadIdx(-1);
-        _ydelay.setReadIdx(-1);
     }
     
     

@@ -27,20 +27,15 @@ private:
     Eigen::MatrixXf _delay_in, _delay_out, _network_out ;
     
     void _delayAllLines(){
-        int ** a ;
-        a = new int * [3];
-        for(int i = 0 ; i < 3 ; i++){
-            a[i] = new int [3];
-        }
-        
         for (int i = 0 ; i < _DLs_num; ++i) {
             _delay_out(0,i) = _delayOneLine(_delay_in(0,i),i);
         }
     }
     
     float _delayOneLine(float sample, int idx){
+        float res = _xdelay_lines[idx]->get();
         _xdelay_lines[idx]->push(sample);
-        return _xdelay_lines[idx]->get();
+        return res;
     }
     
     void _processMatrix(){

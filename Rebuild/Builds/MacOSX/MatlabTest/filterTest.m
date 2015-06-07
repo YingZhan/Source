@@ -46,7 +46,7 @@ for i = 1:16
         fprintf(f_im_lp,'%f ',y(i));
     end
     if i ~= 16
-        fprintf(f_dc,'\n');
+        fprintf(f_im_lp,'\n');
     end
 end
 
@@ -61,7 +61,7 @@ y = allpass(Impulse,g,37);
 for i = 1:length(y)
     fprintf(f_im_ap,'%f ',y(i));
 end
-fprintf(f_dc,'\n');
+fprintf(f_im_ap,'\n');
 
 y = allpass(Impulse,g,113);
 for i = 1:length(y)
@@ -75,7 +75,7 @@ f_im_tc = fopen('tc_impulse.txt','w');
 
 y = tonecorrect(Impulse);
 for i = 1:length(y)
-    fprintf(f_im_ap,'%f ',y(i));
+    fprintf(f_im_tc,'%f ',y(i));
 end
 
 fclose(f_im_tc);
